@@ -1,30 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>HybridApp Home</title>
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<title>Hybrid App</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="header">
-    <h1>HybridApp Feed</h1>
-    <a href="chat.html">Chats</a>
-    <a href="profile.html">Profile</a>
-    <a href="store.html">Store</a>
+
+<!-- FIRST VISIT POPUP -->
+<div id="welcomePopup" class="popup">
+  <p>Welcome to Hybrid!</p>
+  <button id="startBtn">Start</button>
 </div>
 
-<div class="stories-container" id="storiesContainer">
-    <!-- Stories will appear here -->
+<!-- SWIPE INSTRUCTIONS -->
+<div id="instructions" class="swipe-container hidden">
+  <div class="slide">Swipe 1: Chats → Click + to message anyone</div>
+  <div class="slide">Swipe 2: Store → Buy themes & styles</div>
+  <div class="slide">Swipe 3: Profile → Customize your account</div>
+  <button id="nextBtn">Next</button>
 </div>
 
-<div class="feed-container" id="feedContainer">
-    <!-- Posts will appear here -->
+<!-- LOGIN / SIGNUP -->
+<div id="authContainer" class="hidden">
+  <div id="loginForm">
+    <h2>Login</h2>
+    <input type="text" id="loginUsername" placeholder="Username">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button id="loginBtn">Login</button>
+    <p>Don't have an account? <span id="gotoSignUp">Sign Up</span></p>
+  </div>
+  <div id="signupForm" class="hidden">
+    <h2>Sign Up</h2>
+    <input type="text" id="signupUsername" placeholder="Username">
+    <input type="password" id="signupPassword" placeholder="Password">
+    <button id="signupBtn" class="coolBtn">Register</button>
+    <p>Already have an account? <span id="gotoLogin">Login</span></p>
+  </div>
 </div>
 
-<div class="new-post">
-    <textarea id="postText" placeholder="What's on your mind?"></textarea>
-    <input type="file" id="postMedia">
-    <button id="postBtn">Post</button>
+<!-- MAIN SWIPE AREA -->
+<div id="mainSwipe" class="hidden swipe-container">
+  <!-- Chats -->
+  <div class="swipe-page" id="chatsPage">
+    <div class="page-header">Chats <button id="newChat">+</button></div>
+    <div id="chatList"></div>
+  </div>
+  <!-- Store -->
+  <div class="swipe-page" id="storePage">
+    <div class="page-header">Store</div>
+    <div id="storeItems"></div>
+  </div>
+  <!-- Profile -->
+  <div class="swipe-page" id="profilePage">
+    <div class="page-header">Profile</div>
+    <img id="profilePic" src="default.png" class="profile-circle">
+    <input type="text" id="displayName" placeholder="Display Name">
+    <p>Balance: $<span id="balance">0</span></p>
+  </div>
 </div>
 
 <script src="js/main.js"></script>
