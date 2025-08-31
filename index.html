@@ -3,60 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Hybrid App</title>
-<style>
-  body {
-    margin:0; font-family: Arial, sans-serif; background:#121212; color:white; overflow:hidden;
-  }
-
-  /* MODALS */
-  .modal {
-    position:fixed; top:0; left:0; width:100vw; height:100vh;
-    background:rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center;
-    z-index:10;
-  }
-  .modal-content {
-    background:#1f1f1f; padding:30px; border-radius:20px; text-align:center;
-    max-width:400px; width:90%;
-  }
-  .modal button { 
-    margin-top:10px; padding:10px 20px; border:none; border-radius:15px; background:linear-gradient(90deg,#ff3b3b,#ffcc00); color:white; cursor:pointer;
-  }
-  .hidden { display:none; }
-
-  /* SWIPE CONTAINER */
-  .swipe-container {
-    display:flex; overflow-x:auto; scroll-snap-type:x mandatory; width:100vw; height:100vh;
-  }
-  .swipe-page {
-    flex:0 0 100vw; scroll-snap-align:start; padding:20px; box-sizing:border-box;
-  }
-
-  /* PAGE HEADERS */
-  .page-header { display:flex; justify-content:space-between; align-items:center; font-size:1.5em; margin-bottom:15px; }
-  .profile-circle { width:100px; height:100px; border-radius:50%; margin-bottom:10px; }
-
-  /* CHATS */
-  #chatList div { padding:10px; border-bottom:1px solid #333; cursor:pointer; }
-  #chatList div:hover { background:#222; }
-
-  /* STORE */
-  .store-item { background:#222; padding:15px; margin:10px 0; border-radius:15px; display:flex; justify-content:space-between; align-items:center; }
-
-  /* INPUTS & BUTTONS */
-  input, textarea { width:100%; padding:10px; margin:5px 0; border-radius:10px; border:none; }
-  button { cursor:pointer; }
-
-  /* CHAT BOX */
-  #chatBox { display:flex; flex-direction:column; height:80%; border:1px solid #333; border-radius:15px; padding:10px; overflow-y:auto; margin-bottom:10px; }
-  #chatBox div { margin:5px 0; }
-  .message { padding:10px; border-radius:15px; max-width:70%; }
-  .message.self { background:#ff3b3b; align-self:flex-end; }
-  .message.other { background:#333; align-self:flex-start; }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- FIRST VISIT / LOGIN MODAL -->
+<!-- MODAL LOGIN -->
 <div id="modal" class="modal">
   <div class="modal-content" id="modalContent">
     <div id="welcomeStep">
@@ -67,6 +18,71 @@
       <div id="slides">
         <div>Swipe 1: Chats → Click + to message anyone</div>
         <div>Swipe 2: Store → Buy themes & styles</div>
+        <div>Swipe 3: Profile → Customize your account</div>
+      </div>
+      <button id="nextInstrBtn">Next</button>
+    </div>
+    <div id="authStep" class="hidden">
+      <div id="loginForm">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button id="loginBtn">Login</button>
+        <p>Don't have an account? <span id="gotoSignUp">Sign Up</span></p>
+      </div>
+      <div id="signupForm" class="hidden">
+        <h2>Sign Up</h2>
+        <input type="text" id="signupUsername" placeholder="Username">
+        <input type="password" id="signupPassword" placeholder="Password">
+        <button id="signupBtn">Register</button>
+        <p>Already have an account? <span id="gotoLogin">Login</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN SWIPE AREA -->
+<div id="mainSwipe" class="swipe-container hidden">
+
+  <!-- CHATS PAGE -->
+  <div class="swipe-page" id="chatsPage">
+    <div class="page-header">Chats <button id="newChat">+</button></div>
+    <div id="chatList"></div>
+    <div id="chatBox"></div>
+    <input type="text" id="chatInput" placeholder="Type a message...">
+    <button id="sendBtn">Send</button>
+  </div>
+
+  <!-- STORE PAGE -->
+  <div class="swipe-page" id="storePage">
+    <div class="page-header">Store</div>
+    <div id="storeItems"></div>
+  </div>
+
+  <!-- PROFILE PAGE -->
+  <div class="swipe-page" id="profilePage">
+    <div class="page-header">Profile</div>
+    <img id="profilePic" src="default.png" class="profile-circle">
+    <input type="text" id="displayName" placeholder="Display Name">
+    <p>Followers: <span id="followers">1.1B</span></p>
+    <p>Following: <span id="following">1.1B</span></p>
+    <p>Likes: <span id="likes">1.1B</span></p>
+    <button id="saveProfileBtn">Save Profile</button>
+
+    <div id="postBox">
+      <textarea id="postContent" placeholder="Write something..."></textarea>
+      <input type="text" id="postHashtags" placeholder="Add hashtags #...">
+      <button id="postBtn">Post</button>
+    </div>
+    <div id="posts"></div>
+
+    <button id="goLive">Go Live</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>        <div>Swipe 2: Store → Buy themes & styles</div>
         <div>Swipe 3: Profile → Customize your account</div>
       </div>
       <button id="nextInstrBtn">Next</button>
