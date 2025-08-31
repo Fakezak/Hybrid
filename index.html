@@ -3,63 +3,247 @@
 <head>
 <meta charset="UTF-8">
 <title>Hybrid App</title>
-<link rel="stylesheet" href="css/style.css">
+<style>
+  body {
+    margin:0; font-family: Arial, sans-serif; background:#121212; color:white; overflow:hidden;
+  }
+
+  /* MODALS */
+  .modal {
+    position:fixed; top:0; left:0; width:100vw; height:100vh;
+    background:rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center;
+    z-index:10;
+  }
+  .modal-content {
+    background:#1f1f1f; padding:30px; border-radius:20px; text-align:center;
+    max-width:400px; width:90%;
+  }
+  .modal button { 
+    margin-top:10px; padding:10px 20px; border:none; border-radius:15px; background:linear-gradient(90deg,#ff3b3b,#ffcc00); color:white; cursor:pointer;
+  }
+  .hidden { display:none; }
+
+  /* SWIPE CONTAINER */
+  .swipe-container {
+    display:flex; overflow-x:auto; scroll-snap-type:x mandatory; width:100vw; height:100vh;
+  }
+  .swipe-page {
+    flex:0 0 100vw; scroll-snap-align:start; padding:20px; box-sizing:border-box;
+  }
+
+  /* PAGE HEADERS */
+  .page-header { display:flex; justify-content:space-between; align-items:center; font-size:1.5em; margin-bottom:15px; }
+  .profile-circle { width:100px; height:100px; border-radius:50%; margin-bottom:10px; }
+
+  /* CHATS */
+  #chatList div { padding:10px; border-bottom:1px solid #333; cursor:pointer; }
+  #chatList div:hover { background:#222; }
+
+  /* STORE */
+  .store-item { background:#222; padding:15px; margin:10px 0; border-radius:15px; display:flex; justify-content:space-between; align-items:center; }
+
+  /* INPUTS & BUTTONS */
+  input, textarea { width:100%; padding:10px; margin:5px 0; border-radius:10px; border:none; }
+  button { cursor:pointer; }
+
+  /* CHAT BOX */
+  #chatBox { display:flex; flex-direction:column; height:80%; border:1px solid #333; border-radius:15px; padding:10px; overflow-y:auto; margin-bottom:10px; }
+  #chatBox div { margin:5px 0; }
+  .message { padding:10px; border-radius:15px; max-width:70%; }
+  .message.self { background:#ff3b3b; align-self:flex-end; }
+  .message.other { background:#333; align-self:flex-start; }
+</style>
 </head>
 <body>
 
-<!-- FIRST VISIT POPUP -->
-<div id="welcomePopup" class="popup">
-  <p>Welcome to Hybrid!</p>
-  <button id="startBtn">Start</button>
-</div>
-
-<!-- SWIPE INSTRUCTIONS -->
-<div id="instructions" class="swipe-container hidden">
-  <div class="slide">Swipe 1: Chats → Click + to message anyone</div>
-  <div class="slide">Swipe 2: Store → Buy themes & styles</div>
-  <div class="slide">Swipe 3: Profile → Customize your account</div>
-  <button id="nextBtn">Next</button>
-</div>
-
-<!-- LOGIN / SIGNUP -->
-<div id="authContainer" class="hidden">
-  <div id="loginForm">
-    <h2>Login</h2>
-    <input type="text" id="loginUsername" placeholder="Username">
-    <input type="password" id="loginPassword" placeholder="Password">
-    <button id="loginBtn">Login</button>
-    <p>Don't have an account? <span id="gotoSignUp">Sign Up</span></p>
-  </div>
-  <div id="signupForm" class="hidden">
-    <h2>Sign Up</h2>
-    <input type="text" id="signupUsername" placeholder="Username">
-    <input type="password" id="signupPassword" placeholder="Password">
-    <button id="signupBtn" class="coolBtn">Register</button>
-    <p>Already have an account? <span id="gotoLogin">Login</span></p>
+<!-- FIRST VISIT / LOGIN MODAL -->
+<div id="modal" class="modal">
+  <div class="modal-content" id="modalContent">
+    <div id="welcomeStep">
+      <p>Welcome to Hybrid!</p>
+      <button id="startBtn">Start</button>
+    </div>
+    <div id="instructionsStep" class="hidden">
+      <div id="slides">
+        <div>Swipe 1: Chats → Click + to message anyone</div>
+        <div>Swipe 2: Store → Buy themes & styles</div>
+        <div>Swipe 3: Profile → Customize your account</div>
+      </div>
+      <button id="nextInstrBtn">Next</button>
+    </div>
+    <div id="authStep" class="hidden">
+      <div id="loginForm">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button id="loginBtn">Login</button>
+        <p>Don't have an account? <span id="gotoSignUp">Sign Up</span></p>
+      </div>
+      <div id="signupForm" class="hidden">
+        <h2>Sign Up</h2>
+        <input type="text" id="signupUsername" placeholder="Username">
+        <input type="password" id="signupPassword" placeholder="Password">
+        <button id="signupBtn">Register</button>
+        <p>Already have an account? <span id="gotoLogin">Login</span></p>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- MAIN SWIPE AREA -->
-<div id="mainSwipe" class="hidden swipe-container">
-  <!-- Chats -->
+<div id="mainSwipe" class="swipe-container hidden">
+  <!-- CHATS PAGE -->
   <div class="swipe-page" id="chatsPage">
     <div class="page-header">Chats <button id="newChat">+</button></div>
     <div id="chatList"></div>
+    <div id="chatBox"></div>
+    <input type="text" id="chatInput" placeholder="Type a message...">
+    <button id="sendBtn">Send</button>
   </div>
-  <!-- Store -->
+
+  <!-- STORE PAGE -->
   <div class="swipe-page" id="storePage">
     <div class="page-header">Store</div>
     <div id="storeItems"></div>
   </div>
-  <!-- Profile -->
+
+  <!-- PROFILE PAGE -->
   <div class="swipe-page" id="profilePage">
     <div class="page-header">Profile</div>
     <img id="profilePic" src="default.png" class="profile-circle">
     <input type="text" id="displayName" placeholder="Display Name">
     <p>Balance: $<span id="balance">0</span></p>
+    <button id="saveProfileBtn">Save Profile</button>
   </div>
 </div>
 
-<script src="js/main.js"></script>
+<script>
+/* Local Storage Setup */
+if(!localStorage.getItem("users")) localStorage.setItem("users","[]");
+if(!localStorage.getItem("chats")) localStorage.setItem("chats","[]");
+
+/* MODAL LOGIC */
+document.getElementById("startBtn").onclick = ()=>{
+  document.getElementById("welcomeStep").classList.add("hidden");
+  document.getElementById("instructionsStep").classList.remove("hidden");
+};
+document.getElementById("nextInstrBtn").onclick = ()=>{
+  document.getElementById("instructionsStep").classList.add("hidden");
+  document.getElementById("authStep").classList.remove("hidden");
+};
+
+/* LOGIN / SIGNUP TOGGLE */
+document.getElementById("gotoSignUp").onclick = ()=>{
+  document.getElementById("loginForm").classList.add("hidden");
+  document.getElementById("signupForm").classList.remove("hidden");
+};
+document.getElementById("gotoLogin").onclick = ()=>{
+  document.getElementById("signupForm").classList.add("hidden");
+  document.getElementById("loginForm").classList.remove("hidden");
+};
+
+/* SIGNUP */
+document.getElementById("signupBtn").onclick = ()=>{
+  const username = document.getElementById("signupUsername").value;
+  const password = document.getElementById("signupPassword").value;
+  let users = JSON.parse(localStorage.getItem("users"));
+  if(users.find(u=>u.username===username)){ alert("User exists!"); return; }
+  users.push({username,password,balance:1,displayName:"",profilePic:"default.png"});
+  localStorage.setItem("users",JSON.stringify(users));
+  alert("Registered! Login now");
+  document.getElementById("signupForm").classList.add("hidden");
+  document.getElementById("loginForm").classList.remove("hidden");
+};
+
+/* LOGIN */
+document.getElementById("loginBtn").onclick = ()=>{
+  const username = document.getElementById("loginUsername").value;
+  const password = document.getElementById("loginPassword").value;
+  let users = JSON.parse(localStorage.getItem("users"));
+  const user = users.find(u=>u.username===username && u.password===password);
+  if(user){
+    localStorage.setItem("currentUser",JSON.stringify(user));
+    document.getElementById("modal").classList.add("hidden");
+    document.getElementById("mainSwipe").classList.remove("hidden");
+    loadProfile();
+    loadStore();
+    loadChats();
+  } else alert("Invalid login");
+};
+
+/* PROFILE */
+function loadProfile(){
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  document.getElementById("profilePic").src = user.profilePic;
+  document.getElementById("displayName").value = user.displayName;
+  document.getElementById("balance").innerText = user.balance;
+}
+document.getElementById("saveProfileBtn").onclick = ()=>{
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  user.displayName = document.getElementById("displayName").value;
+  localStorage.setItem("currentUser",JSON.stringify(user));
+  alert("Profile Saved!");
+};
+
+/* STORE */
+function loadStore(){
+  const store = [
+    {id:1,name:"Red Theme",price:5},
+    {id:2,name:"Cool Sticker",price:2}
+  ];
+  const container = document.getElementById("storeItems");
+  container.innerHTML="";
+  store.forEach(item=>{
+    const div=document.createElement("div");
+    div.className="store-item";
+    div.innerHTML=`<span>${item.name} - $${item.price}</span><button onclick="buyItem(${item.id})">Buy</button>`;
+    container.appendChild(div);
+  });
+}
+function buyItem(id){
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  const item = id===1 ? {price:5} : {price:2};
+  if(user.balance>=item.price){
+    user.balance-=item.price;
+    localStorage.setItem("currentUser",JSON.stringify(user));
+    document.getElementById("balance").innerText=user.balance;
+    alert("Item bought!");
+  } else alert("Not enough balance!");
+}
+
+/* CHATS */
+function loadChats(){
+  const chatList=document.getElementById("chatList");
+  chatList.innerHTML="";
+  const users = JSON.parse(localStorage.getItem("users"));
+  users.forEach(u=>{
+    const div=document.createElement("div");
+    div.textContent=u.username;
+    div.onclick=()=>openChat(u.username);
+    chatList.appendChild(div);
+  });
+}
+function openChat(username){
+  const chatBox=document.getElementById("chatBox");
+  chatBox.innerHTML="";
+  const chats=JSON.parse(localStorage.getItem("chats"));
+  chats.filter(c=>c.to===username||c.from===username).forEach(m=>{
+    const div=document.createElement("div");
+    div.className="message "+(m.from===JSON.parse(localStorage.getItem("currentUser")).username?"self":"other");
+    div.textContent=m.text;
+    chatBox.appendChild(div);
+  });
+  document.getElementById("sendBtn").onclick=()=>{
+    const input=document.getElementById("chatInput");
+    const text=input.value;
+    if(!text) return;
+    chats.push({from:JSON.parse(localStorage.getItem("currentUser")).username,to:username,text});
+    localStorage.setItem("chats",JSON.stringify(chats));
+    input.value="";
+    loadChats();
+    openChat(username);
+  };
+}
+</script>
 </body>
 </html>
