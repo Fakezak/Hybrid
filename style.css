@@ -1,37 +1,41 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #1c1c1c;
-    color: white;
-    margin: 0;
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#1c1c1c;
+  color:white;
+  overflow-x:hidden;
 }
-.header {
-    background: #222;
-    padding: 10px;
-    display: flex;
-    gap: 20px;
+
+.popup {
+  position: fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+  background:#ffcccb; color:#222; padding:30px; border-radius:20px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.5); text-align:center;
 }
-input, textarea, button {
-    display: block;
-    margin: 10px 0;
-    padding: 10px;
+
+.swipe-container {
+  display:flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  width:100vw; height:100vh;
 }
-button {
-    background: #ff3b3b;
-    border: none;
-    color: white;
-    cursor: pointer;
+
+.swipe-page {
+  min-width:100vw; scroll-snap-align:start;
+  padding:20px; box-sizing:border-box;
 }
-.chat-container {
-    display: flex;
+
+.page-header {
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:1.5em; margin-bottom:20px;
 }
-.contacts {
-    width: 25%;
-    border-right: 1px solid gray;
+
+.profile-circle {
+  width:100px; height:100px; border-radius:50%;
+  margin-bottom:10px;
 }
-.chat-box {
-    width: 75%;
-    padding: 10px;
-}
-.feed-container, .stories-container, .store-items {
-    margin: 20px;
+
+.coolBtn {
+  background: linear-gradient(90deg,#ff3b3b,#ffcc00);
+  border:none; color:white; padding:10px 20px;
+  border-radius:15px; font-size:1em; cursor:pointer;
 }
