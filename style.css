@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #1c1c1c;
+    color: white;
+    margin: 0;
+}
+.header {
+    background: #222;
+    padding: 10px;
+    display: flex;
+    gap: 20px;
+}
+input, textarea, button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+}
+button {
+    background: #ff3b3b;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+.chat-container {
+    display: flex;
+}
+.contacts {
+    width: 25%;
+    border-right: 1px solid gray;
+}
+.chat-box {
+    width: 75%;
+    padding: 10px;
+}
+.feed-container, .stories-container, .store-items {
+    margin: 20px;
+}
