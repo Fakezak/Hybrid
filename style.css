@@ -1,0 +1,204 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Body & background */
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0a0a0a; /* Dark hacker-style */
+    color: #fff;
+}
+
+/* Container for app */
+.app-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Sidebar / Chats list */
+.chat-list {
+    width: 300px;
+    background: #111;
+    border-right: 1px solid #222;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.chat-list.hide {
+    transform: translateX(-100%);
+}
+
+/* Chat items */
+.chat-item {
+    padding: 15px;
+    border-bottom: 1px solid #222;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+}
+
+.chat-item:hover {
+    background: #1a1a1a;
+}
+
+/* Profile picture circle */
+.chat-item img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #00ffcc;
+}
+
+/* Chat screen */
+.chat-screen {
+    flex: 1;
+    background: #0d0d0d;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.chat-screen.show {
+    transform: translateX(0);
+}
+
+/* Chat header */
+.chat-header {
+    padding: 15px;
+    background: #111;
+    border-bottom: 1px solid #222;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Messages */
+.messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.message {
+    margin: 8px 0;
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 70%;
+    position: relative;
+}
+
+.message.sent {
+    background: #00ffcc;
+    color: #000;
+    align-self: flex-end;
+}
+
+.message.received {
+    background: #222;
+    color: #fff;
+    align-self: flex-start;
+}
+
+/* Input area */
+.input-area {
+    display: flex;
+    padding: 10px;
+    background: #111;
+    border-top: 1px solid #222;
+}
+
+.input-area input {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+    background: #222;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.input-area button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 50%;
+    background: #00ffcc;
+    cursor: pointer;
+    color: #000;
+    transition: transform 0.2s;
+}
+
+.input-area button:hover {
+    transform: scale(1.1);
+}
+
+/* Floating add button */
+.add-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: #ff0055;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #ff0055;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.add-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px #ff0055;
+}
+
+/* Search bar */
+.search-bar {
+    padding: 10px 15px;
+    background: #111;
+    border-bottom: 1px solid #222;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    background: #222;
+    color: #fff;
+}
+
+/* Sliding animation helper */
+.slide-left {
+    animation: slideLeft 0.3s forwards;
+}
+
+.slide-right {
+    animation: slideRight 0.3s forwards;
+}
+
+@keyframes slideLeft {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+@keyframes slideRight {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
